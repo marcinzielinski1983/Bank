@@ -37,4 +37,7 @@ public class User {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(referencedColumnName = "ID")
     private Account account;
+
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
+    private  List<Card> card;
 }

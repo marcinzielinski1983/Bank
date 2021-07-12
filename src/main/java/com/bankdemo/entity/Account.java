@@ -31,9 +31,12 @@ public class Account {
 
     private String currency;
 
-    private Long card;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(referencedColumnName = "id")
+    private Card card;
 
-    private String accountType;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private AccountType accountType;
 
 
 }
