@@ -21,6 +21,6 @@ public class AccountType {
     @Column(unique = true)
     private String name;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Benefit> benefits;
 }

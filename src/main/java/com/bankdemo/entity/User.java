@@ -34,9 +34,9 @@ public class User {
     @PESEL
     private String pesel;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(referencedColumnName = "ID")
-    private Account account;
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(referencedColumnName = "id")
+    private List<Account> accounts;
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
     private  List<Card> card;
