@@ -37,6 +37,17 @@ public class UserService {
         return result;
     }
 
+    public User findUserEntityByID ( Long id){
+        var result = userRepository.findAll()
+                .stream()
+                .filter(user -> user.getId().equals(id))
+                .findFirst()
+                .orElseThrow(()-> new RuntimeException(String.format("No user find with id: [{}]", id)));
+        logger.info("Find user with id: [{}]", result);
+        return  result;
+
+    }
+
 //    public  UserDTO addUser(UserDTO newUser){
 //        User userToSave = userMapper.fromDtoToEntity(newUser);
 //

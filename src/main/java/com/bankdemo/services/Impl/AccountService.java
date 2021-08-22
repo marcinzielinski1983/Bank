@@ -58,11 +58,12 @@ public class AccountService {
         return  accountId;
     }
 
-    public List<Account> findAccountByIdReturnEntity (Long id) {
+    public Account findAccountByIdReturnEntity(Long id) {
         var accountId = accountRepository.findAll()
                 .stream()
                 .filter(account -> account.getId().equals(id))
-                .collect(toList());
+                .findFirst()
+                .orElseThrow(()-> new RuntimeException(String.format("No account with id: [{}]", id)));
         logger.info("Account with id: [{}] is : [{}]", id, accountId);
         return  accountId;
     }
