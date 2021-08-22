@@ -4,7 +4,9 @@ import com.bankdemo.DTO.AccountDTO;
 import com.bankdemo.entity.Account;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AccountMapper implements Mapper<Account,AccountDTO> {
 
     private static final Logger logger = LoggerFactory.getLogger(AccountMapper.class);

@@ -15,6 +15,7 @@ import java.util.List;
 public class BenefitController {
 
     private static final Logger logger = LoggerFactory.getLogger(BenefitController.class);
+
     private final BenefitService benefitService;
 
     public BenefitController(BenefitService benefitService) {
@@ -24,10 +25,8 @@ public class BenefitController {
 
     @GetMapping
     public List<BenefitDTO> getAllBenefits(){
-
         logger.info("get all benefits");
-
-    return benefitService.findAllBenefits();
+        return benefitService.findAllBenefits();
 
     }
 
@@ -45,9 +44,7 @@ public class BenefitController {
     @PostMapping("/add")
     public BenefitDTO addBenefit(@RequestBody BenefitDTO toSave) {
         logger.info("adding benefit: [{}]", toSave);
-
         return benefitService.saveBenefit(toSave);
-
 
     }
 }

@@ -35,32 +35,16 @@ public class BenefitService {
                 .map(benefit -> benefitMapper.fromEntityToDto(benefit))
                 .collect(toList());
         logger.info("number of found benefits: [{}]", result.size());
-        logger.debug("result: [{}]");
+        logger.debug("result: [{}]", result);
         return result;
     }
 
-    @Transactional
+
     public BenefitDTO saveBenefit(BenefitDTO toSave){
-        var currentMaxID = benefitRepository.findAll();
-        var aaa =(long)currentMaxID.size();
-//                .stream()
-//                .mapToLong(value -> value.getId())
-//                .max()
-//                .orElse(0);
-
-
-        System.out.println(aaa);
-
-
-
-        Benefit entityTosave = benefitMapper.fromDtoToEntity(toSave);
-        entityTosave.setId( aaa);
-       // benefitRepository.findAll().add(entityTosave);
-            benefitRepository.save(entityTosave);
-
-
-        logger.info("saved benefit: [{}],",entityTosave);
-        return benefitMapper.fromEntityToDto(entityTosave);
+        Benefit entityToSave = benefitMapper.fromDtoToEntity(toSave);
+            benefitRepository.save(entityToSave);
+            logger.info("saved benefit: [{}],",entityToSave);
+        return benefitMapper.fromEntityToDto(entityToSave);
     }
 
 

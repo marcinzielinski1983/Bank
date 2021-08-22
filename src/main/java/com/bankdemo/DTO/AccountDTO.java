@@ -23,11 +23,11 @@ public class AccountDTO {
 
     private Long debit;
 
-    private Currency currency;
+    private Long currencyID;
 
 
-    private Card card;
+    private Long cardID;
 
-    private AccountType accountType;
+    private Long accountTypeID;
 
 }
