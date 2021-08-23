@@ -33,8 +33,6 @@ public class CardService {
                 .collect(Collectors.toList());
         logger.info("Number of card : [{}] , with id: [{}]", result.size(), id);
         return result;
-
-
     }
 
 

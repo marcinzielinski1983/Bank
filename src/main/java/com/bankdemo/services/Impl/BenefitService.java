@@ -2,6 +2,7 @@ package com.bankdemo.services.Impl;
 
 import com.bankdemo.DTO.BenefitDTO;
 import com.bankdemo.converter.BenefitMapper;
+import com.bankdemo.entity.AccountType;
 import com.bankdemo.entity.Benefit;
 import com.bankdemo.repository.BenefitRepository;
 import org.assertj.core.internal.Iterables;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -48,7 +50,13 @@ public class BenefitService {
     }
 
 
-
+    public Benefit findBenefitEntityById(Long id){
+        return benefitRepository.findAll()
+                .stream()
+                .filter(benefit -> benefit.getId().equals(id))
+                .findFirst()
+                .orElseThrow(()-> new RuntimeException(String.format("No benefit find with id: [{}]", id)));
+    }
 
 
 

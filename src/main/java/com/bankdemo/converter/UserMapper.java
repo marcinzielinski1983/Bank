@@ -39,8 +39,8 @@ public class UserMapper implements Mapper<User, UserDTO> {
 
     @Override
     public User fromDtoToEntity(UserDTO dto) {
-        List<Account> accountsWithDtoId = accountService.findAccountByIdReturnEntity(dto.getId());
-        List<Card> cardsWithDtoId = cardService.findAllEntityCardsById(dto.getId());
+        List<Account> accountsWithDtoId = accountService.findAccountByIdReturnEntity(dto.getAccountsID());
+        List<Card> cardsWithDtoId = cardService.findAllEntityCardsById(dto.getCardID());
 
         var result = new User(dto.getId(), dto.getName(), dto.getSurname(),
                 dto.getUsername(), dto.getEmail(), dto.getPesel(),

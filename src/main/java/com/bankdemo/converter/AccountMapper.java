@@ -2,6 +2,10 @@ package com.bankdemo.converter;
 
 import com.bankdemo.DTO.AccountDTO;
 import com.bankdemo.entity.Account;
+import com.bankdemo.entity.Currency;
+import com.bankdemo.entity.User;
+import com.bankdemo.services.Impl.CurrencyService;
+import com.bankdemo.services.Impl.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -10,20 +14,29 @@ import org.springframework.stereotype.Component;
 public class AccountMapper implements Mapper<Account,AccountDTO> {
 
     private static final Logger logger = LoggerFactory.getLogger(AccountMapper.class);
+    private   final UserService userService;
+    private  final CurrencyService currencyService;
 
+    public AccountMapper(UserService userService, CurrencyService currencyService) {
+        this.userService = userService;
+        this.currencyService = currencyService;
+    }
 
     @Override
     public AccountDTO fromEntityToDto(Account entity) {
-        var result = new AccountDTO(entity.getId(),entity.getNumber(),entity.getUser(), entity.getBalance(), entity.getDebit()
-                ,entity.getCurrency(),entity.getCard(),entity.getAccountType());
-        logger.info("converting  ENTITY: {[]} to DTO {[]}", entity ,result );
+        var result = new AccountDTO(entity.getId(),entity.getNumber(),entity.getUser().getId(), entity.getBalance(), entity.getDebit()
+                ,entity.getCurrency().getId(),entity.getCard().getId(),entity.getAccountType().getId());
+        logger.info("converted  ENTITY: {[]} to DTO {[]}", entity ,result );
         return result;
     }
 
     @Override
     public Account fromDtoToEntity(AccountDTO dto) {
-        var result = new Account(dto.getId(), dto.getNumber(), dto.getUser(),dto.getBalance(),
-                dto.getDebit(), dto.getCurrency(),dto.getCard(),dto.getAccountType());
+        User userById = userService.findUserEntityByID(dto.getUserId());
+        Currency currencyById = currencyService.finCurrencyByIdFromRepository(dto.getCurrencyID());
+
+        var result = new Account(dto.getId(), dto.getNumber(), userById,dto.getBalance(),
+                dto.getDebit(),currencyById,dto.getCardID(),dto.getAccountTypeID());
         logger.info("converting  DTO: {[]} to ENTITY {[]}", dto ,result );
         return result;
     }

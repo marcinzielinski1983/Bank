@@ -17,7 +17,7 @@ public class AccountDTO {
 
     private Long number;
 
-    private User user;
+    private Long userId;
 
     private Long balance;
 
