@@ -26,12 +26,13 @@ public class CardService {
 
     ;
 
-    public List<Card> findAllEntityCardsById(Long id) {
+    public Card findEntityCardById(Long id) {
         var result = cardRepository.findAll()
                 .stream()
                 .filter(card -> card.getId().equals(id))
-                .collect(Collectors.toList());
-        logger.info("Number of card : [{}] , with id: [{}]", result.size(), id);
+                .findFirst()
+                        .orElseThrow(()-> new RuntimeException(String.format("No card with Id:", id )));
+        logger.info("Card with Id: [{}], : [{}]", id,result);
         return result;
     }
 

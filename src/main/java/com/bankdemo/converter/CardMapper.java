@@ -44,7 +44,7 @@ public class CardMapper implements Mapper<Card, CardDTO> {
         List <Account> accountsWithIds = new ArrayList<>();
         for (Long element : dto.getAccountsID())
         {
-            accountsWithIds.add(accountService.findAccountByIdReturnEntity(element)) ;
+            accountsWithIds.add(accountService.findEntityAccountById(element)) ;
         }
         var result = new Card(dto.getId(),
                         dto.getNumber(),userWithCardId,accountsWithIds);

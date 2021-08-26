@@ -23,11 +23,12 @@ public class AccountTypeService {
         this.accountTypeRepository = accountTypeRepository;
     }
 
-    public List<AccountType> findAccountTypeEntityById(Long id){
+    public AccountType findAccountTypeEntityById(Long id){
        return accountTypeRepository.findAll()
                 .stream()
                 .filter(accountType -> accountType.getId().equals(id))
-                .collect(Collectors.toList());
+                .findFirst()
+               .orElseThrow(()-> new RuntimeException(String.format("No accountType with Id: [{}]", id)));
     }
 
 

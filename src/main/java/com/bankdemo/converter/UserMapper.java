@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,8 +40,15 @@ public class UserMapper implements Mapper<User, UserDTO> {
 
     @Override
     public User fromDtoToEntity(UserDTO dto) {
-        List<Account> accountsWithDtoId = accountService.findAccountByIdReturnEntity(dto.getAccountsID());
-        List<Card> cardsWithDtoId = cardService.findAllEntityCardsById(dto.getCardID());
+        List<Account> accountsWithDtoId = new ArrayList<>();
+                for(Long element : dto.getAccountsID()){
+                    accountsWithDtoId.add(accountService.findEntityAccountById(element));
+                }
+
+        List<Card> cardsWithDtoId = new ArrayList<>();
+                for(Long element : dto.getCardID()){
+                    cardsWithDtoId.add(cardService.findEntityCardById(element));
+                }
 
         var result = new User(dto.getId(), dto.getName(), dto.getSurname(),
                 dto.getUsername(), dto.getEmail(), dto.getPesel(),

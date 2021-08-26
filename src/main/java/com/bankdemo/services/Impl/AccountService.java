@@ -58,7 +58,7 @@ public class AccountService {
         return  accountId;
     }
 
-    public Account findAccountByIdReturnEntity(Long id) {
+    public Account findEntityAccountById(Long id) {
         var accountId = accountRepository.findAll()
                 .stream()
                 .filter(account -> account.getId().equals(id))
