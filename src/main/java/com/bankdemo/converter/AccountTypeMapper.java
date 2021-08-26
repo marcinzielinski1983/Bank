@@ -7,6 +7,7 @@ import com.bankdemo.services.Impl.AccountTypeService;
 import com.bankdemo.services.Impl.BenefitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,18 +22,18 @@ public class AccountTypeMapper  implements Mapper<AccountType, AccountTypeDTO> {
     public  final AccountTypeService accountTypeService;
     public  final BenefitService benefitService;
 
-    public AccountTypeMapper(AccountTypeService accountTypeService, BenefitService benefitService) {
+    public AccountTypeMapper(@Lazy AccountTypeService accountTypeService, BenefitService benefitService) {
         this.accountTypeService = accountTypeService;
         this.benefitService = benefitService;
     }
 
     @Override
     public AccountTypeDTO fromEntityToDto(AccountType entity) {
-        List<Long> accountsTypeIds = entity.getBenefits()
+        List<Long> accountsTypeBenefitsId = entity.getBenefits()
                 .stream()
                 .map(benefit -> benefit.getId())
                 .collect(Collectors.toList());
-        var result = new AccountTypeDTO(entity.getId(), entity.getName(),accountsTypeIds);
+        var result = new AccountTypeDTO(entity.getId(), entity.getName(),accountsTypeBenefitsId);
         logger.info("AccountType entity convert to DTO : [{}]", result);
 
         return result;

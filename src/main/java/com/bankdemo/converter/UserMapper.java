@@ -8,6 +8,7 @@ import com.bankdemo.services.Impl.AccountService;
 import com.bankdemo.services.Impl.CardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class UserMapper implements Mapper<User, UserDTO> {
     private final AccountService accountService;
     private final CardService cardService;
 
-    public UserMapper(AccountService accountService, CardService cardService) {
+    public UserMapper(@Lazy AccountService accountService, CardService cardService) {
         this.accountService = accountService;
         this.cardService = cardService;
     }

@@ -29,7 +29,7 @@ public class AccountController {
 
     @PostMapping("/add")
     public AccountDTO saveAccount ( @RequestBody AccountDTO toSave){
-       var newAccount =  accountService.saveAccount(toSave);
+       var newAccount =  accountService.addAccount(toSave);
        return newAccount;
 
 
