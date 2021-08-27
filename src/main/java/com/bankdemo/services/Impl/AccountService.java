@@ -56,8 +56,12 @@ public class AccountService {
         logger.info("Account with id: [{}] is : [{}]", id, accountId);
         return accountId;
     }
+    //TODO
+    public AccountDTO replaceAccount (AccountDTO toreplace){
 
 
+        return null;
+    }
 
 
 }
