@@ -1,8 +1,10 @@
 package com.bankdemo.services.Impl;
 
 
+import com.bankdemo.DTO.CurrencyDTO;
 import com.bankdemo.DTO.UserDTO;
 import com.bankdemo.converter.UserMapper;
+import com.bankdemo.entity.Currency;
 import com.bankdemo.entity.User;
 import com.bankdemo.repository.UserRepository;
 import org.slf4j.Logger;
@@ -27,6 +29,14 @@ public class UserService {
     }
 
 
+    public UserDTO addNewUser (UserDTO toSave){
+        var userToSave = userMapper.fromDtoToEntity(toSave);
+        logger.info("New user is saved");
+        return  userMapper.fromEntityToDto(userRepository.save(userToSave));
+
+    }
+
+
     public List<UserDTO> findAllUsers (){
         var result = userRepository.findAll()
                 .stream()
@@ -48,11 +58,25 @@ public class UserService {
 
     }
 
-//    public  UserDTO addUser(UserDTO newUser){
-//        User userToSave = userMapper.fromDtoToEntity(newUser);
-//
-//
-//    }
+    public UserDTO replaceUser(Long id, UserDTO toUpdate){
+        User user = findUserEntityByID(id);
+        User userMapped = userMapper.fromDtoToEntity(toUpdate);
+        userRepository.findAll().removeIf(user1 -> user1.getId().equals(id));
+        userRepository.findAll().add(userMapped);
+        logger.info("replacing user : [{}] with new one: [{}] ", user,userMapped);
+        return userMapper.fromEntityToDto(userMapped);
 
+    }
+
+
+
+
+    public boolean deleteUserById(Long id){
+        var exist = userRepository.existsById(id);
+        if(exist){
+            userRepository.deleteById(id);
+        }
+        return exist;
+    }
 
 }

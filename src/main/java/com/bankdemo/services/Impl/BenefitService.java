@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -42,11 +43,13 @@ public class BenefitService {
     }
 
 
-    public BenefitDTO saveBenefit(BenefitDTO toSave){
+    public BenefitDTO addBenefit(BenefitDTO toSave){
         Benefit entityToSave = benefitMapper.fromDtoToEntity(toSave);
-            benefitRepository.save(entityToSave);
-            logger.info("saved benefit: [{}],",entityToSave);
+             benefitRepository.save(entityToSave);
+
+        logger.info("saved benefit: [{}],",entityToSave);
         return benefitMapper.fromEntityToDto(entityToSave);
+
     }
 
 
@@ -58,6 +61,41 @@ public class BenefitService {
                 .orElseThrow(()-> new RuntimeException(String.format("No benefit find with id: [{}]", id)));
     }
 
+
+    public BenefitDTO replaceBenefitById (Long id, BenefitDTO toReplace){
+        Benefit benefit = findBenefitEntityById(id);
+        Benefit benefitMapped = benefitMapper.fromDtoToEntity(toReplace);
+        benefitRepository.findAll().removeIf(benefit1 -> benefit1.getId().equals(id));
+        benefitRepository.findAll().add(benefitMapped);
+        logger.info("replacing benefit : [{}] with : [{}]", benefit, benefitMapped );
+        return benefitMapper.fromEntityToDto(benefitMapped);
+    }
+
+    public  BenefitDTO updateBenefit(Long id, BenefitDTO toUpdate){
+        Benefit benefit = findBenefitEntityById(id);
+        Benefit benefitMapped = benefitMapper.fromDtoToEntity(toUpdate);
+
+        if(nonNull(benefitMapped.getName())){
+            benefit.setName(benefitMapped.getName());
+        }
+        if(nonNull(benefitMapped.getValue())){
+            benefit.setValue(benefitMapped.getValue());
+        }
+        logger.info("updated benefit: [{}] with changes to apply : [{}]",benefit, toUpdate );
+
+        return benefitMapper.fromEntityToDto(benefit);
+
+    }
+
+
+
+    public  boolean deleteBenefitById(Long id){
+        var exist = benefitRepository.existsById(id);
+        if(exist){
+            benefitRepository.deleteById(id);
+        }
+        return exist;
+    }
 
 
 

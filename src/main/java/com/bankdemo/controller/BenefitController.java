@@ -1,11 +1,9 @@
 package com.bankdemo.controller;
 
 import com.bankdemo.DTO.BenefitDTO;
-import com.bankdemo.entity.Benefit;
 import com.bankdemo.services.Impl.BenefitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,21 +29,30 @@ public class BenefitController {
 
     }
 
-/*    @GetMapping("/add")
-    public Benefit add(){
 
-        Benefit benefit=new Benefit();
-        benefit.setName("benefit");
-        benefit.setValue("2123");
 
-        benefitService.saveBenefit(benefit)
-        return benefitRepository.findAll().stream().findAny().orElse(new Benefit());
-    }*/
-
-    @PostMapping("/add")
+    @PostMapping("{/add}")
     public BenefitDTO addBenefit(@RequestBody BenefitDTO toSave) {
         logger.info("adding benefit: [{}]", toSave);
-        return benefitService.saveBenefit(toSave);
-
+        return benefitService.addBenefit(toSave);
     }
+
+    @PutMapping("{/id}")
+    public BenefitDTO replaceBenefit(@PathVariable Long id ,@RequestBody BenefitDTO toReplace){
+        logger.info("Benefit to replace from controler : [{}]", toReplace);
+        return benefitService.replaceBenefitById(id,toReplace);
+    }
+
+    @PatchMapping("{/id}")
+    public BenefitDTO updateBenefit(@PathVariable Long id ,@RequestBody BenefitDTO toReplace){
+        logger.info("Benefit to replace from controller with new attributes: [{}]", toReplace);
+        return benefitService.updateBenefit(id,toReplace);
+    }
+    @DeleteMapping("{/id}")
+    public  void deleteBenefitById (Long id){
+        logger.info("Benefit with id: [{}] be delete", id);
+        benefitService.deleteBenefitById(id);
+    }
+
+
 }
