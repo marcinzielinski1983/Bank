@@ -21,7 +21,7 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/")
     public List<AccountDTO> getAllAccounts(){
           return accountService.findAllAccounts();
 

@@ -8,6 +8,7 @@ import com.bankdemo.services.Impl.AccountService;
 import com.bankdemo.services.Impl.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

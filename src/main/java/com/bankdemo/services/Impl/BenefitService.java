@@ -59,6 +59,16 @@ public class BenefitService {
                 .filter(benefit -> benefit.getId().equals(id))
                 .findFirst()
                 .orElseThrow(()-> new RuntimeException(String.format("No benefit find with id: [{}]", id)));
+
+    }
+
+    public BenefitDTO findBenefitById(Long id){
+        return  benefitMapper.fromEntityToDto(benefitRepository.findAll()
+                .stream()
+                .filter(benefit -> benefit.getId().equals(id))
+                .findFirst()
+                .orElseThrow(()-> new RuntimeException(String.format("No benefit find with id: %d", id))));
+
     }
 
 
@@ -74,6 +84,7 @@ public class BenefitService {
     public  BenefitDTO updateBenefit(Long id, BenefitDTO toUpdate){
         Benefit benefit = findBenefitEntityById(id);
         Benefit benefitMapped = benefitMapper.fromDtoToEntity(toUpdate);
+        logger.info("updated benefit: [{}] with changes to apply : [{}]",benefit, toUpdate );
 
         if(nonNull(benefitMapped.getName())){
             benefit.setName(benefitMapped.getName());
@@ -81,9 +92,8 @@ public class BenefitService {
         if(nonNull(benefitMapped.getValue())){
             benefit.setValue(benefitMapped.getValue());
         }
-        logger.info("updated benefit: [{}] with changes to apply : [{}]",benefit, toUpdate );
+        return benefitMapper.fromEntityToDto(benefitRepository.save(benefit)) ;
 
-        return benefitMapper.fromEntityToDto(benefit);
 
     }
 
