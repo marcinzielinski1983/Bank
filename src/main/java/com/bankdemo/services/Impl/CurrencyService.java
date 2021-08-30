@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.nonNull;
+
 @Service
 public class CurrencyService {
 
@@ -54,6 +56,27 @@ public class CurrencyService {
                 .orElseThrow(() -> new RuntimeException(String.format("Can not find currency with id: [{}]", id)));
 
     }
+
+    public  CurrencyDTO updateCurrencyById(Long id, CurrencyDTO toUpdate){
+        Currency currency = finCurrencyByIdFromRepository(id);
+        Currency currencyMapped = currencyMapper.fromDtoToEntity(toUpdate);
+        logger.info("updated currency: [{}] with changes to apply : [{}]",currency, toUpdate );
+
+        if(nonNull(currencyMapped.getName())){
+            currency.setName(currencyMapped.getName());
+        }
+        if(nonNull(currencyMapped.getTimeOfTheLastUpdate())){
+            currency.setTimeOfTheLastUpdate(currencyMapped.getTimeOfTheLastUpdate());
+        }
+
+        if (nonNull(currencyMapped.getValueLast())){
+            currency.setValueLast(currencyMapped.getValueLast());
+        }
+        return currencyMapper.fromEntityToDto(currencyRepository.save(currency));
+
+    }
+
+
 
     public CurrencyDTO replaceCurrency(Long id, CurrencyDTO toUpdate) {
         Currency currency = finCurrencyByIdFromRepository(id);

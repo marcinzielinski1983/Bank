@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.nonNull;
+
 @Service
 public class UserService {
 
@@ -57,6 +59,48 @@ public class UserService {
         return  result;
 
     }
+
+    public UserDTO findUserByID ( Long id){
+        var result = userRepository.findAll()
+                .stream()
+                .filter(user -> user.getId().equals(id))
+                .findFirst()
+                .orElseThrow(()-> new RuntimeException(String.format("No user find with id: [{}]", id)));
+        logger.info("Find user with id: [{}]", result);
+        return  userMapper.fromEntityToDto(result);
+
+    }
+
+    public UserDTO updateUser(Long id, UserDTO toUpdate){
+        User user = findUserEntityByID(id);
+        User userMapped = userMapper.fromDtoToEntity(toUpdate);
+        logger.info("updated user : [{}]", toUpdate);
+        if (nonNull(userMapped.getAccounts())){
+            user.setAccounts(userMapped.getAccounts());
+        }
+        if(nonNull(userMapped.getCard())){
+            user.setCard(userMapped.getCard());
+        }
+        if(nonNull(userMapped.getUsername())){
+            user.setUsername(userMapped.getUsername());
+        }
+        if (nonNull(userMapped.getEmail())){
+            user.setEmail(userMapped.getEmail());
+        }
+        if (nonNull(userMapped.getName())){
+            user.setName(userMapped.getName());
+        }
+        if (nonNull(userMapped.getSurname())){
+            user.setSurname(userMapped.getSurname());
+        }
+        if (nonNull(userMapped.getPesel()))
+            user.setPesel(userMapped.getPesel());
+
+        return userMapper.fromEntityToDto(userRepository.save(user));
+
+    }
+
+
 
     public UserDTO replaceUser(Long id, UserDTO toUpdate){
         User user = findUserEntityByID(id);

@@ -75,10 +75,11 @@ public class BenefitService {
     public BenefitDTO replaceBenefitById (Long id, BenefitDTO toReplace){
         Benefit benefit = findBenefitEntityById(id);
         Benefit benefitMapped = benefitMapper.fromDtoToEntity(toReplace);
-        benefitRepository.findAll().removeIf(benefit1 -> benefit1.getId().equals(id));
-        benefitRepository.findAll().add(benefitMapped);
-        logger.info("replacing benefit : [{}] with : [{}]", benefit, benefitMapped );
-        return benefitMapper.fromEntityToDto(benefitMapped);
+        benefitMapped.setId(id);
+       // benefitRepository.findAll().removeIf(benefit1 -> benefit1.getId().equals(id));
+        var savedBenefit =benefitRepository.save(benefitMapped);
+        logger.info("replacing benefit : [{}] ", savedBenefit );
+        return benefitMapper.fromEntityToDto(savedBenefit);
     }
 
     public  BenefitDTO updateBenefit(Long id, BenefitDTO toUpdate){
@@ -93,8 +94,6 @@ public class BenefitService {
             benefit.setValue(benefitMapped.getValue());
         }
         return benefitMapper.fromEntityToDto(benefitRepository.save(benefit)) ;
-
-
     }
 
 

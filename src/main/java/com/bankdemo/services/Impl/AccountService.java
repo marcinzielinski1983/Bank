@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -31,9 +32,8 @@ public class AccountService {
 
     public AccountDTO addAccount(AccountDTO toSave) {
         var entityToSave = accountMapper.fromDtoToEntity(toSave);
-        accountRepository.save(entityToSave);
         logger.info("saved Account [{}] :", entityToSave);
-        return accountMapper.fromEntityToDto(entityToSave);
+        return accountMapper.fromEntityToDto(accountRepository.save(entityToSave));
     }
 
     public List<AccountDTO> findAllAccounts() {
@@ -56,11 +56,53 @@ public class AccountService {
         logger.info("Account with id: [{}] is : [{}]", id, accountId);
         return accountId;
     }
-    //TODO
-    public AccountDTO replaceAccount (AccountDTO toreplace){
 
 
-        return null;
+    public AccountDTO findAccountById(Long id) {
+        var accountId = accountRepository.findAll()
+                .stream()
+                .filter(account -> account.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException(String.format("No account with id: [{}]", id)));
+        logger.info("Account with id: [{}] is : [{}]", id, accountId);
+        return accountMapper.fromEntityToDto(accountId);
+    }
+
+    public AccountDTO replaceAccount (Long id, AccountDTO toReplace){
+        Account accountMapped = accountMapper.fromDtoToEntity(toReplace);
+        accountMapped.setId(id);
+        logger.info("Replaced account : [{}]", accountMapped);
+        return  accountMapper.fromEntityToDto(accountRepository.save(accountMapped));
+    }
+
+    public AccountDTO updateAccount (Long id, AccountDTO toUpdate){
+        Account account = findEntityAccountById(id);
+        Account accountMapped = accountMapper.fromDtoToEntity(toUpdate);
+        if(nonNull(accountMapped.getAccountType()))
+            account.setAccountType(accountMapped.getAccountType());
+        if (nonNull(accountMapped.getBalance()))
+            account.setBalance(accountMapped.getBalance());
+        if (nonNull(accountMapped.getCard()))
+            account.setCard(accountMapped.getCard());
+        if (nonNull(accountMapped.getCurrency()))
+            account.setCurrency(accountMapped.getCurrency());
+        if (nonNull(accountMapped.getDebit()))
+            account.setDebit(accountMapped.getDebit());
+        if (nonNull(accountMapped.getNumber()))
+            account.setNumber(accountMapped.getNumber());
+        if (nonNull(accountMapped.getUser()))
+            account.setUser(accountMapped.getUser());
+        logger.info("Update account will be: [{}]", account);
+        return accountMapper.fromEntityToDto(accountRepository.save(account));
+    }
+
+    public boolean deleteAccountByID(Long id){
+        var exist = accountRepository.existsById(id);
+        logger.info("Account with id: [{}] will be deleted", id);
+        if(exist)
+            accountRepository.deleteById(id);
+        return exist;
+
     }
 
 

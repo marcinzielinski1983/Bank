@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.nonNull;
+
 @Service
 public class CardService {
 
@@ -56,11 +58,37 @@ public class CardService {
     public  CardDTO replaceCard (Long id, CardDTO toReplace){
         Card card = findEntityCardById(id);
         Card cardMapped = cardMapper.fromDtoToEntity(toReplace);
-        cardRepository.findAll().removeIf(card1 -> card1.getId().equals(id));
-        cardRepository.findAll().add(cardMapped);
-        logger.info("Replacing Card : [{}] with new card: [{}]", card,cardMapped);
-        return cardMapper.fromEntityToDto(cardMapped);
+        cardMapped.setId(id);
+        var savedCard = cardRepository.save(cardMapped);
+        logger.info("Replacing Card : [{}] with new card: [{}]", card,savedCard);
+        return cardMapper.fromEntityToDto(savedCard);
 
+    }
+
+    public  CardDTO updateCard (Long id, CardDTO toUpdate){
+        Card card = findEntityCardById(id);
+        Card cardMapped = cardMapper.fromDtoToEntity(toUpdate);
+        logger.info("updated card: [{}] with changes to apply : [{}]",card, toUpdate );
+
+        if(nonNull(cardMapped.getNumber())){
+            card.setNumber(cardMapped.getNumber());
+        }
+        if(nonNull(cardMapped.getUser())){
+            card.setUser(cardMapped.getUser());
+        }
+        if(nonNull(cardMapped.getAccounts())){
+            card.setAccounts(cardMapped.getAccounts());
+        }
+        return cardMapper.fromEntityToDto(cardRepository.save(card));
+
+    }
+
+    public boolean deleteCardById(Long id){
+         var exist = cardRepository.existsById(id);
+         if(exist){
+             cardRepository.deleteById(id);
+         }
+        return exist;
     }
 
 

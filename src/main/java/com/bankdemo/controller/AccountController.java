@@ -26,13 +26,28 @@ public class AccountController {
           return accountService.findAllAccounts();
 
     }
+    @GetMapping("/{id}")
+    public AccountDTO getAccountByID(@PathVariable("id") Long id){
+        return accountService.findAccountById(id);
+    }
 
     @PostMapping("/add")
     public AccountDTO saveAccount ( @RequestBody AccountDTO toSave){
        var newAccount =  accountService.addAccount(toSave);
        return newAccount;
+    }
+    @PutMapping("/{id}")
+    public AccountDTO replaceAccount (@PathVariable("id") Long id,@RequestBody AccountDTO toSave){
+        return accountService.replaceAccount(id,toSave);
+    }
 
-
+    @PatchMapping("/{id}")
+    public AccountDTO updateAccount (@PathVariable("id") Long id,@RequestBody AccountDTO toSave){
+        return accountService.updateAccount(id,toSave);
+    }
+    @DeleteMapping("/{id}")
+    public  void deleteAccount (@PathVariable("id") Long id){
+        accountService.deleteAccountByID(id);
     }
 
 }

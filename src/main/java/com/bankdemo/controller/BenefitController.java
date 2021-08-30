@@ -29,11 +29,10 @@ public class BenefitController {
 
     }
     @GetMapping("/{id}")
-    public BenefitDTO getBenefitId (@PathVariable("id") Long id){
+    public BenefitDTO getBenefitById (@PathVariable("id") Long id){
         return benefitService.findBenefitById(id);
 
     }
-
 
 
     @PostMapping("/add")
