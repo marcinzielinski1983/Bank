@@ -78,6 +78,7 @@ public class BenefitService {
         benefitMapped.setId(id);
        // benefitRepository.findAll().removeIf(benefit1 -> benefit1.getId().equals(id));
         var savedBenefit =benefitRepository.save(benefitMapped);
+        benefitRepository.findAll().add(benefitRepository.save(new Benefit()));
         logger.info("replacing benefit : [{}] ", savedBenefit );
         return benefitMapper.fromEntityToDto(savedBenefit);
     }

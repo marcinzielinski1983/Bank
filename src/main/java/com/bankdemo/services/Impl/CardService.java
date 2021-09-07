@@ -34,7 +34,7 @@ public class CardService {
         return  cardMapper.fromEntityToDto(cardRepository.save(cardToSave));
     }
 
-    public List<CardDTO> findAllCard() {
+    public List<CardDTO> findAllCards() {
         var result = cardRepository.findAll()
                 .stream()
                 .map(cardMapper::fromEntityToDto)
@@ -43,7 +43,17 @@ public class CardService {
         return  result;
     }
 
-    ;
+
+
+    public CardDTO findCardById(Long id) {
+        var result = cardRepository.findAll()
+                .stream()
+                .filter(card -> card.getId().equals(id))
+                .findFirst()
+                .orElseThrow(()-> new RuntimeException(String.format("No card with Id:", id )));
+        logger.info("Card with Id: [{}], : [{}]", id,result);
+        return cardMapper.fromEntityToDto(result);
+    }
 
     public Card findEntityCardById(Long id) {
         var result = cardRepository.findAll()

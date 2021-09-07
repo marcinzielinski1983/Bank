@@ -2,6 +2,7 @@ package com.bankdemo.controller;
 
 import com.bankdemo.DTO.BenefitDTO;
 import com.bankdemo.services.Impl.BenefitService;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +16,12 @@ public class BenefitController {
 
     private static final Logger logger = LoggerFactory.getLogger(BenefitController.class);
 
-    private final BenefitService benefitService;
+    private  BenefitService benefitService;
 
     public BenefitController(BenefitService benefitService) {
         this.benefitService = benefitService;
     }
+
 
 
     @GetMapping
