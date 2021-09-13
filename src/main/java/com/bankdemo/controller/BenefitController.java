@@ -56,9 +56,9 @@ public class BenefitController {
     }
 
     @DeleteMapping("/{id}")
-    public  void deleteBenefitById( @PathVariable ("id") Long id){
+    public  boolean deleteBenefitById( @PathVariable ("id") Long id){
         logger.info("Benefit with id: [{}] be delete", id);
-        benefitService.deleteBenefitById(id);
+       return benefitService.deleteBenefitById(id);
     }
 
 

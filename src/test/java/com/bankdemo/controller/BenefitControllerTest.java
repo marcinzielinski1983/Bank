@@ -1,3 +1,5 @@
+package com.bankdemo.controller;
+
 import com.bankdemo.DTO.BenefitDTO;
 import com.bankdemo.controller.BenefitController;
 import com.bankdemo.repository.BenefitRepository;
@@ -19,13 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.BDDAssumptions.given;
+import static org.springframework.test.web.client.ExpectedCount.times;
 
 
 @RunWith(MockitoJUnitRunner.class)
 public class BenefitControllerTest {
-
-
-
 
     @Mock
     BenefitService benefitService;
@@ -39,10 +39,27 @@ public class BenefitControllerTest {
     }
 
     @Test
-    public void analyzeBenefitControllerMethodReplaceBenefit() {
-        //given
+    public void analyzeBenefitControllerMethodFindBenefit() {
+
         List<BenefitDTO> benefitList = benefitController.getAllBenefits();
         Assert.assertThat(benefitList, Matchers.hasSize(2));
+
+
+
+    }
+
+
+
+
+    @Test
+    public  void  analyzeBenefitControllerMethodDelete(){
+        List<BenefitDTO> benefitList = benefitController.getAllBenefits();
+        var aa = benefitList.size();
+
+       var result =  benefitController.deleteBenefitById(1l);
+        System.out.println(benefitList.toString()+ "wynik" + result);
+       Assert.assertThat(benefitList, Matchers.hasSize(1));
+
 
 
 
@@ -55,6 +72,8 @@ public class BenefitControllerTest {
 
          return benefitList;
     }
+
+
 
 
 }
