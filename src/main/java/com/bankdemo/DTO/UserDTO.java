@@ -3,6 +3,7 @@ package com.bankdemo.DTO;
 
 import com.bankdemo.entity.Account;
 import com.bankdemo.entity.Card;
+import com.bankdemo.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -15,8 +16,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import java.util.List;
+import java.util.Set;
 
-@AllArgsConstructor
+
 @Data
 @Getter
 @Setter
@@ -31,6 +33,7 @@ public class UserDTO {
 
     private String surname;
 
+    private  String password;
 
     private  String username;
 
@@ -44,4 +47,19 @@ public class UserDTO {
     private List<Long> accountsID;
 
     private  List<Long> cardID;
+
+    private Set<Long> rolesID;
+
+    public UserDTO(Long id, String name, String surname, String password, String username, String email, String pesel, List<Long> accountsID, List<Long> cardID, Set<Long> rolesID) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.password = password;
+        this.username = username;
+        this.email = email;
+        this.pesel = pesel;
+        this.accountsID = accountsID;
+        this.cardID = cardID;
+        this.rolesID = rolesID;
+    }
 }

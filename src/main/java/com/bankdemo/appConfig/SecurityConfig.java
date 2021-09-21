@@ -1,5 +1,6 @@
 package com.bankdemo.appConfig;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,17 +14,26 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final String userPassword;
+    private final String adminPassword;
+
+    public SecurityConfig(@Value("${uds.userPassword}") String userPassword,
+                          @Value("${uds.adminPassword}") String adminPassword) {
+        this.userPassword = userPassword;
+        this.adminPassword = adminPassword;
+    }
+
     @Bean
     public UserDetailsService userDetailsService(){
         UserDetails user = User.withDefaultPasswordEncoder()
                 .username("user")
-                .password("1234")
+                .password(userPassword)
                 .roles("USER")
                 .build();
 
         UserDetails amdin = User.withDefaultPasswordEncoder()
                 .username("admin")
-                .password("1234")
+                .password(adminPassword)
                 .roles("ADMIN")
                 .build();
 
@@ -33,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().and().authorizeRequests()
-                .antMatchers(HttpMethod.GET,"/benefit").permitAll()
+                .antMatchers(HttpMethod.GET,"/benefit/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/benefit/add").hasRole("USER")
                 .antMatchers(HttpMethod.DELETE,"/benefit").hasAnyRole("USER","ADMIN")
                 .anyRequest().hasRole("USER")
