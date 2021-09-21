@@ -25,6 +25,8 @@ public class User {
 
     private String surname;
 
+    private String role;
+
     @Column(unique = true)
     private  String username;
 

@@ -1,5 +1,6 @@
 package com.bankdemo.appConfig;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,6 +13,14 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final String userPassword;
+    private final String adminPassword;
+
+    public SecurityConfig(@Value("${uds.userPassword}") String userPassword,@Value("${uds.adminPassword}") String adminPassword) {
+        this.userPassword = userPassword;
+        this.adminPassword = adminPassword;
+    }
 
     @Bean
     public UserDetailsService userDetailsService(){
