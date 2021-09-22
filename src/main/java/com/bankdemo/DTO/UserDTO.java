@@ -37,6 +37,8 @@ public class UserDTO {
 
     private  String username;
 
+    private String role;
+
 
     private  String email;
 
