@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,9 +21,12 @@ public class Card {
     @Column(unique = true)
     private Long number;
 
-    private String user;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(referencedColumnName = "ID")
+    private User user;
 
-    private Long accounts;
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "card")
+    private List<Account> accounts;
 
 
 }

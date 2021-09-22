@@ -6,11 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Entity
 public class AccountType {
 
     @Id
@@ -20,5 +21,6 @@ public class AccountType {
     @Column(unique = true)
     private String name;
 
-    private String benefits;
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    private List<Benefit> benefits;
 }

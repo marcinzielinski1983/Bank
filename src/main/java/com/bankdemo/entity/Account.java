@@ -22,18 +22,21 @@ public class Account {
     @Column(unique = true)
     private Long number;
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "account")
-    private List<User> user;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private User user;
 
     private Long balance;
 
     private Long debit;
 
-    private String currency;
+    @ManyToOne
+    private Currency currency;
 
-    private Long card;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(referencedColumnName = "id")
+    private Card card;
 
-    private String accountType;
-
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private AccountType accountType;
 
 }
